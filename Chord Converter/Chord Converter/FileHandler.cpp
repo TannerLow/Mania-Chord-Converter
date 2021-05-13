@@ -4,15 +4,8 @@
 #include <iostream>
 
 std::vector<std::string> grabHitObjects(const std::string& filename) {
-	std::ifstream file(filename);
-	std::vector<std::string> lines;
-	std::string buffer;
 
-	while (std::getline(file, buffer)) {
-		lines.push_back(buffer);
-	}
-
-	file.close();
+	std::vector<std::string> lines = getLines(filename);
 
 	//remove non-hit objects
 	auto it = std::find(lines.begin(), lines.end(), "[HitObjects]");
@@ -56,17 +49,8 @@ int charToInt(char c) {
 }
 
 std::vector<std::string> convertFile(const std::string& filename, std::vector<std::string>& hitObjects, const std::string& versionName) {	
-	//get orignal chart data
-	std::ifstream file(filename);
-	std::vector<std::string> lines;
-	std::string buffer;
 
-	//read original chart file
-	while (std::getline(file, buffer)) {
-		lines.push_back(buffer);
-	}
-
-	file.close();
+	std::vector<std::string> lines = getLines(filename);
 
 	//get line number of metadata tag
 	int metadataLine;
@@ -165,4 +149,35 @@ void writeToFile(std::vector<std::string>& data, const std::string& filename, co
 	}
 
 	file.close();
+}
+
+int getKeyMode(std::vector<std::string>& fileData) {
+	int difficultyLine;
+	for (difficultyLine = 0; difficultyLine < fileData.size(); difficultyLine++) {
+		if (fileData[difficultyLine] == "[Difficulty]")
+			break;
+	}
+	difficultyLine += 2; //skip to circle size
+	std::string copy = fileData[difficultyLine];
+
+	//parse circle size line for key count
+	while (copy[0] < '0' or copy[0] > '9') {
+		copy.erase(copy.begin());
+	}
+	return std::stoi(copy);
+}
+
+std::vector<std::string> getLines(const std::string& filename) {
+	//get orignal chart data
+	std::ifstream file(filename);
+	std::vector<std::string> lines;
+	std::string buffer;
+
+	//read original chart file
+	while (std::getline(file, buffer)) {
+		lines.push_back(buffer);
+	}
+
+	file.close();
+	return lines;
 }

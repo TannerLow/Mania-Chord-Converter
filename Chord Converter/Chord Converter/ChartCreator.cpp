@@ -3,17 +3,16 @@
 #include <iostream>
 #include <ctime>
 
-std::string convertToHitObject(int timeStamp, int columnNumber) {
+std::string convertToHitObject(int timeStamp, int columnNumber, int keyCount) {
 	// x ,  y , time, type , objParams , hitsounds
 	//192, 192, 3664, 1    , 0         , 0:0:0:0:
 
 	int x;
-	switch (columnNumber) {
-		case 0 : x = 64; break;
-		case 1 : x = 192; break;
-		case 2 : x = 320; break;
-		case 3 : x = 448; break;
-		default : x = 64; break;
+	if (keyCount == 4) {
+		x = get4kXValue(columnNumber);
+	}
+	else {
+		x = get7kXValue(columnNumber);
 	}
 
 	std::string hitObject = "";
@@ -24,25 +23,58 @@ std::string convertToHitObject(int timeStamp, int columnNumber) {
 	return hitObject;
 }
 
-std::vector<std::string> createChartsHitObjects(std::set<int> timeStamps) {
+int get4kXValue(int columnNumber) {
+	int x;
+	switch (columnNumber) {
+	case 0 : x = 64; break;
+	case 1 : x = 192; break;
+	case 2 : x = 320; break;
+	case 3 : x = 448; break;
+	default: x = 64; break;
+	}
+	return x;
+}
+int get7kXValue(int columnNumber) {
+	int x;
+	switch (columnNumber) {
+	case 0 : x = 36; break;
+	case 1 : x = 109; break;
+	case 2 : x = 182; break;
+	case 3 : x = 256; break;
+	case 4 : x = 329; break;
+	case 5 : x = 402; break;
+	case 6 : x = 475; break;
+	default: x = 36; break;
+	}
+	return x;
+}
+
+
+std::vector<std::string> createChartsHitObjects(std::set<int> timeStamps, int keyCount) {
 	std::srand(std::time(0));
 	std::vector<std::string> hitObjects;
 	//for each timestamp
 	for (int time : timeStamps) {
-		int noteCount = std::rand() % 4 + 1;
+		int noteCount = std::rand() % keyCount + 1;
 		std::set<int> columns;
 		//generate notes at timestamp
 		for (int i = 0; i < noteCount; i++) {
-			int column = std::rand() % 4;
+			int column = std::rand() % keyCount;
 			//regenerate if column already in use
-			while (columns.find(column) == columns.end()) {
+			while (columns.find(column) != columns.end()) {
+				column = std::rand() % keyCount;
+			}
+			columns.insert(column);
+
+			//WORKS WELL FOR LONG JACKS ?
+			/*while (columns.find(column) == columns.end()) {
 				column = std::rand() % 4;
 				columns.insert(column);
-			}
+			}*/
 		}
 		//Convert time stamp and columns to hit objects
 		for (int column : columns) {
-			hitObjects.push_back(convertToHitObject(time, column));
+			hitObjects.push_back(convertToHitObject(time, column, keyCount));
 		}
 		columns.clear();
 	}

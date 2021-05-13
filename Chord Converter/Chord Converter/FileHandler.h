@@ -21,3 +21,7 @@ std::vector<std::string> replaceHitObjects(std::vector<std::string>& originalCha
 std::string getOsuFile();
 
 void writeToFile(std::vector<std::string>& data, const std::string& filename, const std::string& versionName);
+
+int getKeyMode(std::vector<std::string>& fileData);
+
+std::vector<std::string> getLines(const std::string& filename);

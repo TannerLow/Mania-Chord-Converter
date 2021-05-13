@@ -24,10 +24,23 @@ int main() {
 		std::getline(std::cin, diffname);
 	}
 
+	//get key count
+	std::vector<std::string> filedata = getLines(filename);
+	int keyCount = getKeyMode(filedata);
+	
+	//prompt for detailed options
+	/*std::cout << "Want in depth options?(y/n): " << std::endl;
+	char c;
+	std::cin >> c;
+	int singles = 25, jumps = 25, hands = 25, quads = 25;
+	if (c != 'n') {
+
+	}*/
+
 	//convert file
 	std::vector<std::string> originalHitObjects = grabHitObjects(filename);
 	std::set<int> timestamps = getTimeStampSet(originalHitObjects);
-	std::vector<std::string> generatedHitObjects = createChartsHitObjects(timestamps);
+	std::vector<std::string> generatedHitObjects = createChartsHitObjects(timestamps, keyCount);
 	std::vector<std::string> convert = convertFile(filename, generatedHitObjects, diffname);
 
 	writeToFile(convert, filename, diffname);
