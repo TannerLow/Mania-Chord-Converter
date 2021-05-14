@@ -64,7 +64,7 @@ int main() {
 		std::cin >> c;
 		if (c != 'n') {
 			std::cout << "Enter the max bpm you want to appear as a whole number (Ex. 210).\n"
-				<< "High bpm + 1/4th notes usually makes impossible jacks.\n";
+				<< "High bpm + 1/8th notes usually makes impossible jacks.\n";
 			std::cout << "bpm> ";
 			std::cin >> bpm;
 		}

@@ -18,7 +18,7 @@ std::vector<std::string> grabHitObjects(const std::string& filename) {
 
 std::set<int> getTimeStampSet(std::vector<std::string>& hitObjects, int bpm) {
 	//calculate threshold based on desired bpm, prevents impossible jacks
-	int threshold = 60000 / bpm / 2 - 20;
+	int threshold = 60000 / bpm / 4 - 5;
 
 	//compile timestamps
 	std::set<int> timeStamps;
