@@ -66,12 +66,12 @@ int get7kXValue(int columnNumber) {
 }
 
 
-std::vector<std::string> createChartsHitObjects(std::set<int> timeStamps, int keyCount) {
+std::vector<std::string> createChartsHitObjects(std::set<int> timeStamps, int keyCount, std::vector<int> distributions) {
 	std::srand(std::time(0));
 	std::vector<std::string> hitObjects;
 	//for each timestamp
 	for (int time : timeStamps) {
-		int noteCount = std::rand() % keyCount + 1;
+		int noteCount = generateChordSize(distributions, keyCount);
 		std::set<int> columns;
 		//generate notes at timestamp
 		for (int i = 0; i < noteCount; i++) {
@@ -95,4 +95,13 @@ std::vector<std::string> createChartsHitObjects(std::set<int> timeStamps, int ke
 		columns.clear();
 	}
 	return hitObjects;
+}
+
+int generateChordSize(std::vector<int>& distributions, int keyCount) {
+	int roll = std::rand() % 100 + 1;
+	for (int i = 0; i < distributions.size(); i++) {
+		if (roll <= distributions[i]) return i + 1;
+		roll -= distributions[i];
+	}
+	return keyCount;
 }
