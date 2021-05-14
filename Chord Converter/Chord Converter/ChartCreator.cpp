@@ -11,6 +11,9 @@ std::string convertToHitObject(int timeStamp, int columnNumber, int keyCount) {
 	if (keyCount == 4) {
 		x = get4kXValue(columnNumber);
 	}
+	else if (keyCount == 6) {
+		x = get6kXValue(columnNumber);
+	}
 	else {
 		x = get7kXValue(columnNumber);
 	}
@@ -31,6 +34,19 @@ int get4kXValue(int columnNumber) {
 	case 2 : x = 320; break;
 	case 3 : x = 448; break;
 	default: x = 64; break;
+	}
+	return x;
+}
+int get6kXValue(int columnNumber) {
+	int x;
+	switch (columnNumber) {
+	case 0: x = 42; break;
+	case 1: x = 128; break;
+	case 2: x = 213; break;
+	case 3: x = 298; break;
+	case 4: x = 384; break;
+	case 5: x = 469; break;
+	default: x = 42; break;
 	}
 	return x;
 }
