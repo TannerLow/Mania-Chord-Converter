@@ -9,7 +9,7 @@
 
 std::vector<std::string> grabHitObjects(const std::string& filename);
 
-std::set<int> getTimeStampSet(std::vector<std::string>& hitObjects);
+std::set<int> getTimeStampSet(std::vector<std::string>& hitObjects, int bpm);
 int getTimeStamp(std::string& hitObject);
 int charToInt(char c);
 

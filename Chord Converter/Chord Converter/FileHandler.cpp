@@ -16,10 +16,21 @@ std::vector<std::string> grabHitObjects(const std::string& filename) {
 	return lines;
 }
 
-std::set<int> getTimeStampSet(std::vector<std::string>& hitObjects) {
+std::set<int> getTimeStampSet(std::vector<std::string>& hitObjects, int bpm) {
+	//calculate threshold based on desired bpm, prevents impossible jacks
+	int threshold = 60000 / bpm / 2 - 20;
+
+	//compile timestamps
 	std::set<int> timeStamps;
+	int previousTime = -100000;
 	for (auto& hitObject : hitObjects) {
-		timeStamps.insert(getTimeStamp(hitObject));
+		int time = getTimeStamp(hitObject);
+		if (bpm != -1 and time - previousTime < threshold) {
+			continue;
+		}
+		timeStamps.insert(time);
+		previousTime = time;
+
 	}
 	return timeStamps;
 }

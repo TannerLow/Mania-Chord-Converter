@@ -38,6 +38,8 @@ int main() {
 		distributions.push_back(100 / keyCount);
 	}
 	distributions.push_back(100 - (100 / keyCount * (keyCount-1)));
+	//default bpm set to -1 to signify no bpm specified
+	int bpm = -1;
 	//user chose to set options themselves
 	if (c != 'n') {
 
@@ -46,7 +48,7 @@ int main() {
 		std::cin >> c;
 		if (c != 'n') {
 			std::cout << "Enter whole numbers between 0-100.\n"
-					  << "They are the percentages that a given chord size wil appear.\n"
+					  << "They are the percentages that a given chord size will appear.\n"
 					  << "Totals over 100% may result in errors." << std::endl;
 			for (int i = 0; i < keyCount; i++) {
 				std::cout << "Chords size " << i+1 << ": ";
@@ -56,11 +58,21 @@ int main() {
 				distributions[i] = n;
 			}
 		}
+
+		//cap bpm
+		std::cout << "Would you like to cap the bpm?(y/n): " << std::endl;
+		std::cin >> c;
+		if (c != 'n') {
+			std::cout << "Enter the max bpm you want to appear as a whole number (Ex. 210).\n"
+				<< "High bpm + 1/4th notes usually makes impossible jacks.\n";
+			std::cout << "bpm> ";
+			std::cin >> bpm;
+		}
 	}
 
 	//convert file
 	std::vector<std::string> originalHitObjects = grabHitObjects(filename);
-	std::set<int> timestamps = getTimeStampSet(originalHitObjects);
+	std::set<int> timestamps = getTimeStampSet(originalHitObjects, bpm);
 	std::vector<std::string> generatedHitObjects = createChartsHitObjects(timestamps, keyCount, distributions);
 	std::vector<std::string> convert = convertFile(filename, generatedHitObjects, diffname);
 

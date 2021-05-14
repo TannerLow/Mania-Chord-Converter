@@ -82,11 +82,6 @@ std::vector<std::string> createChartsHitObjects(std::set<int> timeStamps, int ke
 			}
 			columns.insert(column);
 
-			//WORKS WELL FOR LONG JACKS ?
-			/*while (columns.find(column) == columns.end()) {
-				column = std::rand() % 4;
-				columns.insert(column);
-			}*/
 		}
 		//Convert time stamp and columns to hit objects
 		for (int column : columns) {
@@ -105,3 +100,12 @@ int generateChordSize(std::vector<int>& distributions, int keyCount) {
 	}
 	return keyCount;
 }
+
+
+
+//saving this for a rainy day
+//WORKS WELL FOR LONG JACKS ?
+/*while (columns.find(column) == columns.end()) {
+	column = std::rand() % 4;
+	columns.insert(column);
+}*/
